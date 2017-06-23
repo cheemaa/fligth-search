@@ -1,4 +1,4 @@
-# Flight search
+# model.Flight search
 
 ## Problem
 
