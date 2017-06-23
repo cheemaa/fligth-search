@@ -8,6 +8,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.stream.Stream;
 
@@ -16,23 +17,43 @@ import java.util.stream.Stream;
  */
 public class FlightsFromCsvRepository implements FlightsRepository {
 
-    private final static String RESOURCES_PATH = "/resources/";
-    private List<Flight> flights = new ArrayList<Flight>();
+    private HashMap<String, List<Flight>> flightsMap = new HashMap<>();
 
     public FlightsFromCsvRepository(String fileName) {
-        Path path = Paths.get(RESOURCES_PATH + fileName);
+        String pathStr = this.getClass().getClassLoader().getResource("flights.csv").getPath();
+        Path path = Paths.get(pathStr);
         try (Stream<String> lines = Files.lines(path)) {
-            lines.forEach(s -> flights.add(parseFlight(s)));
+            lines.forEach(s -> addFlightToRoute(parseFlight(s)));
         } catch (IOException ex) {
 
         }
     }
 
+    private void addFlightToRoute(Flight flight) {
+        String key = flight.getRouteKey();
+        if(flightsMap.containsKey(flight.getRouteKey())) {
+            flightsMap.get(key).add(flight);
+        }
+        else {
+            List<Flight> routeFlights = new ArrayList<>();
+            routeFlights.add(flight);
+            flightsMap.put(key, routeFlights);
+        }
+    }
+
     private Flight parseFlight(String lineFromFile) {
-        return null;
+        String[] data = lineFromFile.split(",");
+        String origin = data[0];
+        String destination = data[1];
+        String flightCode = data[2];
+        double price = Double.valueOf(data[3]);
+
+        return new Flight(flightCode, origin, destination, price);
     }
 
     public List<Flight> findByOriginAndDestination(String origin, String destination) {
-        return null;
+        String key = origin + "," + destination;
+
+        return flightsMap.get(key);
     }
 }

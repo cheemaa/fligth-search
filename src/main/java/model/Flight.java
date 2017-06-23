@@ -1,5 +1,9 @@
 package model;
 
+import java.util.Date;
+
+import static model.Constants.DAY_IN_MILLIS;
+
 /**
  * Created by cheemaa on 23/6/17.
  */
@@ -16,6 +20,10 @@ public class Flight {
         this.price = price;
     }
 
+    public String getRouteKey() {
+        return origin + "," + destination;
+    }
+
     public String getFlightCode() {
         return flightCode;
     }
@@ -30,5 +38,27 @@ public class Flight {
 
     public double getPrice() {
         return price;
+    }
+
+    public double getPriceForDate(Date flightDate) {
+        Date today = new Date();
+        double diffInDays = (flightDate.getTime() - today.getTime()) / DAY_IN_MILLIS;
+
+        double modifier;
+
+        if(diffInDays > 30) {
+            modifier = 0.8;
+        }
+        else if(diffInDays > 16) {
+            modifier = 1;
+        }
+        else if(diffInDays > 3) {
+            modifier = 1.2;
+        }
+        else {
+            modifier = 1.5;
+        }
+
+        return price * modifier;
     }
 }

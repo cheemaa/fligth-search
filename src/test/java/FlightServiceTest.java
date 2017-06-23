@@ -5,8 +5,9 @@ import repositories.FlightsFromCsvRepository;
 import repositories.FlightsRepository;
 import services.FlightService;
 
-import java.io.InputStream;
 import java.util.Date;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 
 /**
@@ -19,9 +20,9 @@ class FlightServiceTest {
 
         FlightService fs = new FlightService(repository1);
 
-        FlightSearch search = new FlightSearch(Airport.Madrid, Airport.Barcelona, new Date(), 3, 0, 0);
+        FlightSearch search = new FlightSearch(Airport.Amsterdam, Airport.Frakfurt, new Date(), 3, 0, 0);
 
-        fs.searchFlight(search);
+        assertEquals(3, fs.searchFlights(search).size());
     }
 
 }
