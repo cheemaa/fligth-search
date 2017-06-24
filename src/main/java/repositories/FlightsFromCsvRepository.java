@@ -20,7 +20,7 @@ public class FlightsFromCsvRepository implements FlightsRepository {
     private HashMap<String, List<Flight>> flightsMap = new HashMap<>();
 
     public FlightsFromCsvRepository(String fileName) {
-        String pathStr = this.getClass().getClassLoader().getResource("flights.csv").getPath();
+        String pathStr = this.getClass().getClassLoader().getResource(fileName).getPath();
         Path path = Paths.get(pathStr);
         try (Stream<String> lines = Files.lines(path)) {
             lines.forEach(s -> addFlightToRoute(parseFlight(s)));

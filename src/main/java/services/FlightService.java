@@ -29,12 +29,11 @@ public class FlightService {
 
         if(flights != null) {
             for(Flight flight : flights) {
-                double totalPrice;
                 double adultsPrice = search.getNumberOfAdults() * flight.getPriceForDate(search.getDate());
                 double childrenPrice = search.getNumberOfChildren() * CHILDREN_PRICE_MODIFIER * flight.getPriceForDate(search.getDate());
                 double infantsPrice = search.getNumberOfInfants() * InfantPrice.getPriceForFlight(flight.getFlightCode());
 
-                totalPrice = adultsPrice + childrenPrice + infantsPrice;
+                double totalPrice = adultsPrice + childrenPrice + infantsPrice;
 
                 SearchResult result = new SearchResult(flight.getFlightCode(), totalPrice);
                 results.add(result);
