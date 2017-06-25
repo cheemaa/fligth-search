@@ -28,6 +28,9 @@ Remember that the **automated and self-checking tests** are mandatory. You shoul
 
 We kindly ask you to put your code on a public project in `github.com` under your account. Use Maven or Gradle as automation tool and link it to a build service likeTravis CI.  
 
+## Implementation assumptions
+When a company does not have infant prices then 0 is set to infant price
+
 ## What we value most?
 
 The goal is to provide us with a full understanding of your coding style and skills. We’ll pay particular attention to:
