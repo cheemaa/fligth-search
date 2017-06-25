@@ -1,4 +1,4 @@
-package model;
+package constants;
 
 /**
  * Created by cheemaa on 23/6/17.

@@ -1,8 +1,8 @@
-package model;
+package pojos;
 
 import java.util.Date;
 
-import static model.Constants.DAY_IN_MILLIS;
+import static constants.Constants.DAY_IN_MILLIS;
 
 /**
  * Created by cheemaa on 23/6/17.

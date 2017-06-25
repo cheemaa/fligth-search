@@ -1,6 +1,6 @@
 package repositories;
 
-import model.Flight;
+import pojos.Flight;
 
 import java.util.List;
 

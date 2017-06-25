@@ -1,26 +1,28 @@
 package services;
 
-import model.Flight;
-import model.FlightSearch;
-import model.InfantPrice;
-import model.SearchResult;
+import pojos.Flight;
+import pojos.FlightSearch;
+import pojos.SearchResult;
 import repositories.FlightsRepository;
+import repositories.InfantPriceRepository;
 
 import java.security.InvalidParameterException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import static model.Constants.CHILDREN_PRICE_MODIFIER;
+import static constants.Constants.CHILDREN_PRICE_MODIFIER;
 
 /**
  * Created by cheemaa on 23/6/17.
  */
 public class FlightService {
     private FlightsRepository flightsRepository;
+    private InfantPriceRepository infantPriceRepository;
 
-    public FlightService(FlightsRepository flightsRepository) {
+    public FlightService(FlightsRepository flightsRepository, InfantPriceRepository infantPriceRepository) {
         this.flightsRepository = flightsRepository;
+        this.infantPriceRepository = infantPriceRepository;
     }
 
     private void validateInputParameters(FlightSearch search) {
@@ -47,7 +49,7 @@ public class FlightService {
             for(Flight flight : flights) {
                 double adultsPrice = search.getNumberOfAdults() * flight.getPriceForDate(search.getDate());
                 double childrenPrice = search.getNumberOfChildren() * CHILDREN_PRICE_MODIFIER * flight.getPriceForDate(search.getDate());
-                double infantsPrice = search.getNumberOfInfants() * InfantPrice.getPriceForFlight(flight.getFlightCode());
+                double infantsPrice = search.getNumberOfInfants() * infantPriceRepository.findByFlightCode(flight.getFlightCode());
 
                 double totalPrice = adultsPrice + childrenPrice + infantsPrice;
 

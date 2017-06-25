@@ -1,16 +1,18 @@
-import model.Airport;
-import model.FlightSearch;
-import model.SearchResult;
+import pojos.Airport;
+import pojos.FlightSearch;
+import pojos.SearchResult;
 import org.junit.jupiter.api.Test;
-import repositories.FlightsFromCsvRepository;
+import repositories.InfantPriceRepository;
+import repositories.csv.FlightsFromCsvRepository;
 import repositories.FlightsRepository;
+import repositories.inmemory.InfantPriceInMemoryRepository;
 import services.FlightService;
 
 import java.security.InvalidParameterException;
 import java.util.Date;
 import java.util.List;
 
-import static model.Constants.DAY_IN_MILLIS;
+import static constants.Constants.DAY_IN_MILLIS;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.fail;
 
@@ -21,9 +23,9 @@ import static org.junit.jupiter.api.Assertions.fail;
 class FlightServiceTest {
     @Test
     void searchFlight() {
-        // Repository using the file given in the instructions
-        FlightsRepository repository1 = new FlightsFromCsvRepository("flights.csv");
-        FlightService fs = new FlightService(repository1);
+        FlightsRepository flightsRepository = new FlightsFromCsvRepository("flights.csv");
+        InfantPriceRepository infantPriceRepository = new InfantPriceInMemoryRepository();
+        FlightService fs = new FlightService(flightsRepository, infantPriceRepository);
 
         Date todayPlus31Days = new Date( System.currentTimeMillis() + 35 * DAY_IN_MILLIS);
         int numberOfAdults = 1;
