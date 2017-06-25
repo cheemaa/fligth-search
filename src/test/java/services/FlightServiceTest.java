@@ -1,3 +1,5 @@
+package services;
+
 import pojos.Airport;
 import pojos.FlightSearch;
 import pojos.SearchResult;
