@@ -3,11 +3,12 @@ import pojos.FlightSearch;
 import pojos.SearchResult;
 import org.junit.jupiter.api.Test;
 import repositories.InfantPriceRepository;
-import repositories.csv.FlightsFromCsvRepository;
+import repositories.csv.FlightsCsvRepository;
 import repositories.FlightsRepository;
 import repositories.inmemory.InfantPriceInMemoryRepository;
 import services.FlightService;
 
+import java.io.IOException;
 import java.security.InvalidParameterException;
 import java.util.Date;
 import java.util.List;
@@ -23,7 +24,12 @@ import static org.junit.jupiter.api.Assertions.fail;
 class FlightServiceTest {
     @Test
     void searchFlight() {
-        FlightsRepository flightsRepository = new FlightsFromCsvRepository("flights.csv");
+        FlightsRepository flightsRepository = null;
+        try {
+            flightsRepository = new FlightsCsvRepository("flights.csv");
+        } catch (IOException e) {
+            fail("Missing test file");
+        }
         InfantPriceRepository infantPriceRepository = new InfantPriceInMemoryRepository();
         FlightService fs = new FlightService(flightsRepository, infantPriceRepository);
 

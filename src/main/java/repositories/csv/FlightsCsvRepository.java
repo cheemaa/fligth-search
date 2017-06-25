@@ -1,12 +1,16 @@
 package repositories.csv;
 
+import com.sun.media.sound.InvalidDataException;
 import pojos.Flight;
 import repositories.FlightsRepository;
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.security.InvalidParameterException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -15,18 +19,22 @@ import java.util.stream.Stream;
 /**
  * Created by cheemaa on 23/6/17.
  */
-public class FlightsFromCsvRepository implements FlightsRepository {
+public class FlightsCsvRepository implements FlightsRepository {
 
     private HashMap<String, List<Flight>> flightsMap = new HashMap<>();
 
-    public FlightsFromCsvRepository(String fileName) {
-        String pathStr = this.getClass().getClassLoader().getResource(fileName).getPath();
-        Path path = Paths.get(pathStr);
-        try (Stream<String> lines = Files.lines(path)) {
-            lines.forEach(s -> addFlightToRoute(parseFlight(s)));
-        } catch (IOException ex) {
-
+    public FlightsCsvRepository(String fileName) throws IOException {
+        if(fileName == null) {
+            throw new InvalidParameterException("filename cannot be null");
         }
+        URL resource = this.getClass().getClassLoader().getResource(fileName);
+        if(resource == null) {
+            throw new FileNotFoundException(fileName + " not found");
+        }
+        String pathStr = resource.getPath();
+        Path path = Paths.get(pathStr);
+        Stream<String> lines = Files.lines(path);
+        lines.forEach(s -> addFlightToRoute(parseFlight(s)));
     }
 
     private void addFlightToRoute(Flight flight) {
