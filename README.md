@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/cheemaa/fligth-search.svg?branch=master)](https://travis-ci.org/cheemaa/fligth-search)
+
 # Flight search
 
 ## Problem
