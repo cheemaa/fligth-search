@@ -6,6 +6,7 @@ import model.InfantPrice;
 import model.SearchResult;
 import repositories.FlightsRepository;
 
+import java.security.InvalidParameterException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -22,9 +23,24 @@ public class FlightService {
         this.flightsRepository = flightsRepository;
     }
 
-    public List<SearchResult> searchFlights(FlightSearch search) {
-        List<SearchResult> results = new ArrayList<SearchResult>();
+    private void validateInputParameters(FlightSearch search) {
+        if(search == null)
+            throw new InvalidParameterException("Empty search parameters");
+        else if(search.getDate() == null || search.getDate().getTime() < new Date().getTime())
+            throw new InvalidParameterException("Invalid date");
+        else if(search.getOrigin() == null || search.getDestination() == null
+                || search.getOrigin() == search.getDestination())
+            throw new InvalidParameterException("Invalid origin and/or destination airport");
+        else if(search.getNumberOfAdults() < 0 || search.getNumberOfChildren() < 0 || search.getNumberOfInfants() < 0)
+            throw new InvalidParameterException("Invalid number of adults, children or infants");
+        else if(search.getNumberOfAdults() == 0 && search.getNumberOfChildren() == 0 && search.getNumberOfInfants() == 0)
+            throw new InvalidParameterException("Select at least one person");
+    }
 
+    public List<SearchResult> searchFlights(FlightSearch search) {
+        validateInputParameters(search);
+
+        List<SearchResult> results = new ArrayList<SearchResult>();
         List<Flight> flights = flightsRepository.findByOriginAndDestination(search.getOrigin(), search.getDestination());
 
         if(flights != null) {

@@ -22,7 +22,7 @@ public class InfantPrice {
     }
 
     public static double getPriceForFlight(String flightCode) {
-        String airlineCode = flightCode.substring(0, 1);
+        String airlineCode = flightCode.substring(0, 2);
         if(map.containsKey(airlineCode)) return map.get(airlineCode);
         else return 0;
     }
